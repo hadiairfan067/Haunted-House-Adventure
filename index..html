@@ -1,0 +1,2263 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haunted House | Adventure Game</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+    --purple: #a855f7;
+    --light-purple: #d8b4fe;
+    --dark: #090711;
+    --panel: #171123;
+    --white: #f5efff;
+    --muted: #aaa0bb;
+    --green: #86efac;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+/* NAVBAR */
+
+.navbar {
+    height: 80px;
+    padding: 0 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #2c203d;
+    background: rgba(9, 7, 17, 0.95);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-family: 'Creepster', cursive;
+    font-size: 30px;
+    color: var(--light-purple);
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: white;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--light-purple);
+}
+
+.nav-play {
+    background: var(--purple);
+    border: none;
+    padding: 11px 24px;
+    color: white;
+    border-radius: 30px;
+    font-weight: 900;
+}
+
+/* HERO SECTION */
+
+.hero {
+    min-height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 70px 8%;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 75% 50%, #392052 0%, transparent 45%),
+        linear-gradient(135deg, #0c0917, #171024);
+}
+
+.hero-content {
+    width: 50%;
+    position: relative;
+    z-index: 2;
+}
+
+.tag {
+    display: inline-block;
+    background: #2c193e;
+    border: 1px solid #69448c;
+    color: var(--light-purple);
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: 900;
+    margin-bottom: 22px;
+}
+
+.hero h1 {
+    font-family: 'Creepster', cursive;
+    font-size: clamp(55px, 7vw, 100px);
+    line-height: 1;
+    letter-spacing: 2px;
+    margin-bottom: 22px;
+}
+
+.hero h1 span {
+    color: var(--purple);
+    display: block;
+    text-shadow: 0 0 35px #9333ea;
+}
+
+.hero p {
+    color: var(--muted);
+    max-width: 430px;
+    font-size: 17px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.primary-btn,
+.secondary-btn {
+    border-radius: 30px;
+    padding: 15px 30px;
+    font-size: 15px;
+    font-weight: 900;
+    transition: 0.3s;
+}
+
+.primary-btn {
+    background: var(--purple);
+    color: white;
+    border: 1px solid var(--purple);
+    box-shadow: 0 0 25px #9333ea55;
+}
+
+.primary-btn:hover {
+    background: #c084fc;
+    transform: translateY(-3px);
+}
+
+.secondary-btn {
+    background: transparent;
+    border: 1px solid #5a476e;
+    color: white;
+}
+
+.secondary-btn:hover {
+    background: #281c37;
+}
+
+.hero-art {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.moon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #d8c9ff;
+    position: absolute;
+    top: 5%;
+    right: 10%;
+    box-shadow: 0 0 60px #c4b5fd88;
+}
+
+.house {
+    position: relative;
+    width: 350px;
+    height: 350px;
+    margin-top: 60px;
+    filter: drop-shadow(0 0 35px #7c3aed55);
+    animation: float 4s ease-in-out infinite;
+}
+
+.roof {
+    width: 0;
+    height: 0;
+    border-left: 190px solid transparent;
+    border-right: 190px solid transparent;
+    border-bottom: 150px solid #372449;
+    position: absolute;
+    top: 0;
+    left: -15px;
+}
+
+.house-body {
+    position: absolute;
+    width: 320px;
+    height: 230px;
+    background: #21152e;
+    border: 5px solid #4b3260;
+    bottom: 0;
+    left: 0;
+}
+
+.window {
+    width: 65px;
+    height: 75px;
+    background: #a78bfa;
+    border: 6px solid #49315c;
+    position: absolute;
+    top: 35px;
+    box-shadow: 0 0 25px #a78bfa;
+}
+
+.window::before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 100%;
+    background: #49315c;
+    left: 50%;
+}
+
+.window::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background: #49315c;
+    top: 50%;
+}
+
+.window.one {
+    left: 35px;
+}
+
+.window.two {
+    right: 35px;
+}
+
+.house-door {
+    width: 75px;
+    height: 125px;
+    background: #100b1c;
+    border: 5px solid #49315c;
+    position: absolute;
+    bottom: 0;
+    left: 115px;
+    border-radius: 35px 35px 0 0;
+}
+
+.door-knob {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #facc15;
+    border-radius: 50%;
+    right: 10px;
+    top: 65px;
+}
+
+.ghost {
+    position: absolute;
+    font-size: 80px;
+    top: 10%;
+    left: -5%;
+    animation: ghostFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px #c4b5fd);
+}
+
+.bat {
+    position: absolute;
+    font-size: 30px;
+    animation: batFloat 4s ease-in-out infinite;
+}
+
+.bat.one {
+    right: 5%;
+    top: 15%;
+}
+
+.bat.two {
+    left: 10%;
+    bottom: 15%;
+    animation-delay: 1s;
+}
+
+/* SECTION */
+
+.section {
+    padding: 90px 8%;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-heading h2 {
+    font-family: 'Creepster', cursive;
+    font-size: clamp(35px, 5vw, 55px);
+    color: var(--light-purple);
+    margin-bottom: 12px;
+}
+
+.section-heading p {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+/* FEATURES */
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.feature-card {
+    background: linear-gradient(145deg, #1c1429, #110d1c);
+    border: 1px solid #342442;
+    padding: 35px 25px;
+    border-radius: 18px;
+    transition: 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-7px);
+    border-color: var(--purple);
+    box-shadow: 0 10px 35px #9333ea20;
+}
+
+.feature-icon {
+    font-size: 45px;
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    font-size: 21px;
+    margin-bottom: 12px;
+}
+
+.feature-card p {
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+/* GAME SECTION */
+
+.game-section {
+    padding: 80px 5%;
+    background: #110c1c;
+    border-top: 1px solid #2e2040;
+    border-bottom: 1px solid #2e2040;
+}
+
+.game-wrapper {
+    max-width: 950px;
+    margin: auto;
+}
+
+.game-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.game-top h2 {
+    font-family: 'Creepster', cursive;
+    color: var(--light-purple);
+    font-size: 35px;
+}
+
+.game-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.small-btn {
+    border: 1px solid #4d3863;
+    background: #21172f;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 800;
+}
+
+.small-btn:hover {
+    background: #49315c;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.stat {
+    background: #1d152b;
+    border: 1px solid #392747;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.stat span {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 7px;
+    letter-spacing: 1px;
+}
+
+.stat strong {
+    font-size: 22px;
+    color: var(--light-purple);
+}
+
+.canvas-box {
+    position: relative;
+    border: 2px solid #62447d;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #100b1b;
+    box-shadow: 0 0 40px #7c3aed20;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+}
+
+.game-message {
+    text-align: center;
+    padding: 20px 10px;
+    color: var(--light-purple);
+    min-height: 65px;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.game-overlay {
+    position: absolute;
+    inset: 0;
+    background: #090711dd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    z-index: 5;
+}
+
+.overlay-content {
+    max-width: 420px;
+}
+
+.overlay-content .emoji {
+    font-size: 70px;
+    margin-bottom: 15px;
+}
+
+.overlay-content h2 {
+    font-family: 'Creepster', cursive;
+    color: var(--light-purple);
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.overlay-content p {
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* MOBILE CONTROLS */
+
+.mobile-controls {
+    display: none;
+    width: 180px;
+    margin: 20px auto 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.control-btn {
+    width: 55px;
+    height: 55px;
+    background: #281b3b;
+    color: white;
+    border: 1px solid #65468a;
+    border-radius: 12px;
+    font-size: 23px;
+    touch-action: none;
+    user-select: none;
+}
+
+.control-btn:active {
+    background: var(--purple);
+}
+
+.mobile-controls .up {
+    grid-column: 2;
+}
+
+.mobile-controls .left {
+    grid-column: 1;
+}
+
+.mobile-controls .down {
+    grid-column: 2;
+}
+
+.mobile-controls .right {
+    grid-column: 3;
+}
+
+/* HOW TO PLAY */
+
+.instructions {
+    max-width: 750px;
+    margin: auto;
+    background: #191225;
+    border: 1px solid #352545;
+    border-radius: 18px;
+    padding: 35px;
+}
+
+.instruction-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid #332440;
+}
+
+.instruction-row:last-child {
+    border-bottom: none;
+}
+
+.instruction-icon {
+    width: 55px;
+    height: 55px;
+    min-width: 55px;
+    border-radius: 12px;
+    background: #2a1b3c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+}
+
+.instruction-row h3 {
+    margin-bottom: 5px;
+}
+
+.instruction-row p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+/* FOOTER */
+
+footer {
+    background: #090711;
+    border-top: 1px solid #2e2040;
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--muted);
+}
+
+footer .logo {
+    margin-bottom: 12px;
+}
+
+/* ANIMATIONS */
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes ghostFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(-5deg);
+    }
+
+    50% {
+        transform: translateY(-25px) rotate(5deg);
+    }
+}
+
+@keyframes batFloat {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+    }
+
+    50% {
+        transform: translateY(-15px) translateX(10px);
+    }
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 850px) {
+
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 60px 6%;
+    }
+
+    .hero-content,
+    .hero-art {
+        width: 100%;
+    }
+
+    .hero-content p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-art {
+        margin-top: 35px;
+        min-height: 350px;
+    }
+
+    .house {
+        transform: scale(0.85);
+    }
+
+    .features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+}
+
+@media(max-width: 600px) {
+
+    .navbar {
+        padding: 0 5%;
+        height: 70px;
+    }
+
+    .logo {
+        font-size: 23px;
+    }
+
+    .nav-links a {
+        display: none;
+    }
+
+    .nav-play {
+        padding: 9px 16px;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 60px 5% 40px;
+    }
+
+    .hero h1 {
+        font-size: 58px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .hero-art {
+        transform: scale(0.8);
+        margin-top: 0;
+        min-height: 300px;
+    }
+
+    .section {
+        padding: 65px 5%;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-card {
+        padding: 25px;
+    }
+
+    .game-section {
+        padding: 60px 4%;
+    }
+
+    .game-top {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .game-top h2 {
+        width: 100%;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat {
+        padding: 10px;
+    }
+
+    .stat strong {
+        font-size: 18px;
+    }
+
+    .mobile-controls {
+        display: grid;
+    }
+
+    .instructions {
+        padding: 20px;
+    }
+
+    .instruction-row {
+        gap: 12px;
+    }
+
+    .instruction-icon {
+        width: 45px;
+        height: 45px;
+        min-width: 45px;
+        font-size: 22px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        HAUNTED<span> HOUSE</span>
+    </div>
+
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#how-to-play">How To Play</a>
+
+        <button class="nav-play" onclick="startGame()">
+            PLAY NOW
+        </button>
+    </div>
+
+</nav>
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <div class="tag">
+            ✦ A DARK ADVENTURE AWAITS ✦
+        </div>
+
+        <h1>
+            HAUNTED
+            <span>HOUSE</span>
+        </h1>
+
+        <p>
+            Enter the mysterious haunted mansion.
+            Collect hidden keys, escape the ghost,
+            and discover what lies beyond the darkness.
+        </p>
+
+        <div class="hero-buttons">
+
+            <button class="primary-btn" onclick="startGame()">
+                👻 PLAY THE GAME
+            </button>
+
+            <button class="secondary-btn" onclick="goToInstructions()">
+                HOW TO PLAY
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="hero-art">
+
+        <div class="moon"></div>
+
+        <div class="bat one">🦇</div>
+        <div class="bat two">🦇</div>
+
+        <div class="ghost">👻</div>
+
+        <div class="house">
+
+            <div class="roof"></div>
+
+            <div class="house-body">
+
+                <div class="window one"></div>
+                <div class="window two"></div>
+
+                <div class="house-door">
+                    <div class="door-knob"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- FEATURES -->
+
+<section class="section" id="features">
+
+    <div class="section-heading">
+
+        <h2>THE NIGHTMARE BEGINS</h2>
+
+        <p>
+            Explore the darkness. Survive the adventure.
+        </p>
+
+    </div>
+
+    <div class="features">
+
+        <div class="feature-card">
+
+            <div class="feature-icon">🏚️</div>
+
+            <h3>Explore The Mansion</h3>
+
+            <p>
+                Discover mysterious rooms, hidden paths,
+                and secrets waiting to be uncovered.
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <div class="feature-icon">👻</div>
+
+            <h3>Escape The Ghost</h3>
+
+            <p>
+                A spooky ghost is following you.
+                Keep moving and avoid getting caught!
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <div class="feature-icon">🔑</div>
+
+            <h3>Find Hidden Keys</h3>
+
+            <p>
+                Collect every golden key to unlock
+                the exit and move to the next level.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- GAME -->
+
+<section class="game-section" id="game">
+
+    <div class="game-wrapper">
+
+        <div class="game-top">
+
+            <h2>👻 THE GAME</h2>
+
+            <div class="game-actions">
+
+                <button class="small-btn" onclick="toggleSound()">
+                    🔊 Sound
+                </button>
+
+                <button class="small-btn" onclick="restartGame()">
+                    ↻ Restart
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+                <span>LEVEL</span>
+                <strong id="level">1</strong>
+            </div>
+
+            <div class="stat">
+                <span>SCORE</span>
+                <strong id="score">0</strong>
+            </div>
+
+            <div class="stat">
+                <span>KEYS</span>
+                <strong id="keyCount">0/3</strong>
+            </div>
+
+            <div class="stat">
+                <span>LIVES</span>
+                <strong id="lives">❤️❤️❤️</strong>
+            </div>
+
+        </div>
+
+        <div class="canvas-box">
+
+            <canvas id="gameCanvas" width="640" height="400"></canvas>
+
+            <div class="game-overlay" id="gameOverlay">
+
+                <div class="overlay-content">
+
+                    <div class="emoji" id="overlayEmoji">🏚️</div>
+
+                    <h2 id="overlayTitle">ENTER THE NIGHT</h2>
+
+                    <p id="overlayText">
+                        Are you brave enough to enter the haunted house?
+                        Find the keys, escape the ghost, and survive.
+                    </p>
+
+                    <button class="primary-btn" id="overlayButton" onclick="startGame()">
+                        START ADVENTURE
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="game-message" id="gameMessage">
+            Find 3 keys and unlock the exit!
+        </div>
+
+        <div class="mobile-controls">
+
+            <button class="control-btn up" data-dir="up">▲</button>
+
+            <button class="control-btn left" data-dir="left">◀</button>
+
+            <button class="control-btn down" data-dir="down">▼</button>
+
+            <button class="control-btn right" data-dir="right">▶</button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- HOW TO PLAY -->
+
+<section class="section" id="how-to-play">
+
+    <div class="section-heading">
+
+        <h2>HOW TO SURVIVE</h2>
+
+        <p>
+            Learn the controls before entering the mansion.
+        </p>
+
+    </div>
+
+    <div class="instructions">
+
+        <div class="instruction-row">
+
+            <div class="instruction-icon">🎮</div>
+
+            <div>
+                <h3>Move Your Character</h3>
+                <p>
+                    Use Arrow Keys or W, A, S, D on your keyboard.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="instruction-row">
+
+            <div class="instruction-icon">🔑</div>
+
+            <div>
+                <h3>Collect The Keys</h3>
+                <p>
+                    Find all three golden keys hidden inside the mansion.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="instruction-row">
+
+            <div class="instruction-icon">👻</div>
+
+            <div>
+                <h3>Avoid The Ghost</h3>
+                <p>
+                    Stay away from the ghost. You have three lives.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="instruction-row">
+
+            <div class="instruction-icon">🚪</div>
+
+            <div>
+                <h3>Escape The House</h3>
+                <p>
+                    Reach the exit after collecting all keys to win the level.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+
+    <div class="logo">HAUNTED HOUSE</div>
+
+    <p>
+        Dare to enter? © 2026 Haunted House Adventure
+    </p>
+
+</footer>
+
+<script>
+
+// ====================================
+// GAME CONFIGURATION
+// ====================================
+
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+const TILE = 40;
+const COLS = 16;
+const ROWS = 10;
+
+const overlay = document.getElementById("gameOverlay");
+const overlayTitle = document.getElementById("overlayTitle");
+const overlayText = document.getElementById("overlayText");
+const overlayEmoji = document.getElementById("overlayEmoji");
+const overlayButton = document.getElementById("overlayButton");
+const gameMessage = document.getElementById("gameMessage");
+
+let gameRunning = false;
+let gameStarted = false;
+let gameOver = false;
+let soundOn = true;
+
+let score = 0;
+let level = 1;
+let lives = 3;
+let collectedKeys = 0;
+
+let animationId = null;
+let lastTime = 0;
+
+const player = {
+    x: 60,
+    y: 60,
+    size: 24,
+    speed: 150
+};
+
+const ghost = {
+    x: 560,
+    y: 320,
+    size: 28,
+    speed: 65
+};
+
+const door = {
+    x: 580,
+    y: 40,
+    size: 40
+};
+
+let keys = [];
+let coins = [];
+let walls = [];
+
+const movement = {
+    up: false,
+    down: false,
+    left: false,
+    right: false
+};
+
+// ====================================
+// MAZE
+// ====================================
+
+const baseMap = [
+    "################",
+    "#..............#",
+    "#.###..###.....#",
+    "#...#.....#....#",
+    "###.#.###.#.##.#",
+    "#.....#........#",
+    "#.###.#.###.##.#",
+    "#...#.....#....#",
+    "#..............#",
+    "################"
+];
+
+function createMaze() {
+
+    walls = [];
+
+    baseMap.forEach((row, y) => {
+
+        [...row].forEach((cell, x) => {
+
+            if (cell === "#") {
+
+                walls.push({
+                    x: x * TILE,
+                    y: y * TILE,
+                    w: TILE,
+                    h: TILE
+                });
+
+            }
+
+        });
+
+    });
+
+}
+
+// ====================================
+// LEVEL SETUP
+// ====================================
+
+function setupLevel() {
+
+    createMaze();
+
+    player.x = 60;
+    player.y = 60;
+
+    ghost.x = 560;
+    ghost.y = 320;
+
+    ghost.speed = 65 + (level - 1) * 15;
+
+    collectedKeys = 0;
+
+    keys = [
+        { x: 180, y: 60, collected: false },
+        { x: 500, y: 220, collected: false },
+        { x: 300, y: 340, collected: false }
+    ];
+
+    coins = [
+        { x: 100, y: 180, collected: false },
+        { x: 340, y: 100, collected: false },
+        { x: 540, y: 140, collected: false },
+        { x: 220, y: 260, collected: false },
+        { x: 460, y: 340, collected: false }
+    ];
+
+    updateStats();
+
+    gameMessage.textContent =
+        "Level " + level + ": Find all 3 keys and escape!";
+
+}
+
+// ====================================
+// UI
+// ====================================
+
+function updateStats() {
+
+    document.getElementById("level").textContent = level;
+
+    document.getElementById("score").textContent = score;
+
+    document.getElementById("keyCount").textContent =
+        collectedKeys + "/3";
+
+    document.getElementById("lives").textContent =
+        "❤️".repeat(lives) + "🖤".repeat(3 - lives);
+
+}
+
+function showOverlay(title, text, emoji, buttonText, action) {
+
+    overlay.classList.remove("hidden");
+
+    overlayTitle.textContent = title;
+    overlayText.textContent = text;
+    overlayEmoji.textContent = emoji;
+    overlayButton.textContent = buttonText;
+
+    overlayButton.onclick = action;
+
+}
+
+function hideOverlay() {
+
+    overlay.classList.add("hidden");
+
+}
+
+// ====================================
+// NAVIGATION
+// ====================================
+
+function startGame() {
+
+    document.getElementById("game").scrollIntoView({
+        behavior: "smooth"
+    });
+
+    if (!gameStarted) {
+
+        gameStarted = true;
+        gameOver = false;
+
+        score = 0;
+        level = 1;
+        lives = 3;
+
+        setupLevel();
+
+    }
+
+    hideOverlay();
+
+    gameRunning = true;
+
+    if (animationId === null) {
+        lastTime = performance.now();
+        animationId = requestAnimationFrame(gameLoop);
+    }
+
+}
+
+function goToInstructions() {
+
+    document.getElementById("how-to-play").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+function restartGame() {
+
+    gameRunning = false;
+    gameStarted = true;
+    gameOver = false;
+
+    if (animationId !== null) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+    }
+
+    score = 0;
+    level = 1;
+    lives = 3;
+
+    setupLevel();
+
+    showOverlay(
+        "READY TO ESCAPE?",
+        "The ghost is waiting. Collect your keys and reach the door.",
+        "👻",
+        "START GAME",
+        startGame
+    );
+
+    drawGame();
+
+}
+
+// ====================================
+// COLLISION DETECTION
+// ====================================
+
+function rectCollision(a, b) {
+
+    return (
+        a.x < b.x + b.w &&
+        a.x + a.size > b.x &&
+        a.y < b.y + b.h &&
+        a.y + a.size > b.y
+    );
+
+}
+
+function canMove(x, y) {
+
+    const next = {
+        x: x,
+        y: y,
+        size: player.size
+    };
+
+    if (
+        x < 0 ||
+        y < 0 ||
+        x + player.size > canvas.width ||
+        y + player.size > canvas.height
+    ) {
+        return false;
+    }
+
+    return !walls.some(wall => rectCollision(next, wall));
+
+}
+
+function canGhostMove(x, y) {
+
+    const next = {
+        x: x,
+        y: y,
+        size: ghost.size
+    };
+
+    return !walls.some(wall => rectCollision(next, wall));
+
+}
+
+// ====================================
+// PLAYER MOVEMENT
+// ====================================
+
+function movePlayer(delta) {
+
+    if (!gameRunning) return;
+
+    let dx = 0;
+    let dy = 0;
+
+    if (movement.up) dy -= 1;
+    if (movement.down) dy += 1;
+    if (movement.left) dx -= 1;
+    if (movement.right) dx += 1;
+
+    if (dx !== 0 && dy !== 0) {
+
+        dx *= 0.707;
+        dy *= 0.707;
+
+    }
+
+    const speed = player.speed * delta;
+
+    const newX = player.x + dx * speed;
+    const newY = player.y + dy * speed;
+
+    if (canMove(newX, player.y)) {
+        player.x = newX;
+    }
+
+    if (canMove(player.x, newY)) {
+        player.y = newY;
+    }
+
+}
+
+// ====================================
+// GHOST MOVEMENT
+// ====================================
+
+function moveGhost(delta) {
+
+    if (!gameRunning) return;
+
+    const dx = player.x - ghost.x;
+    const dy = player.y - ghost.y;
+
+    const distance = Math.hypot(dx, dy);
+
+    if (distance > 0) {
+
+        const step = ghost.speed * delta;
+
+        const nextX = ghost.x + (dx / distance) * step;
+        const nextY = ghost.y + (dy / distance) * step;
+
+        if (canGhostMove(nextX, ghost.y)) {
+            ghost.x = nextX;
+        }
+
+        if (canGhostMove(ghost.x, nextY)) {
+            ghost.y = nextY;
+        }
+
+    }
+
+}
+
+// ====================================
+// COLLECT ITEMS
+// ====================================
+
+function collectItems() {
+
+    keys.forEach(key => {
+
+        if (!key.collected) {
+
+            const distance = Math.hypot(
+                player.x - key.x,
+                player.y - key.y
+            );
+
+            if (distance < 30) {
+
+                key.collected = true;
+                collectedKeys++;
+
+                score += 100;
+
+                gameMessage.textContent =
+                    "🔑 You found a golden key!";
+
+                updateStats();
+
+                playSound(700, 0.1);
+
+            }
+
+        }
+
+    });
+
+    coins.forEach(coin => {
+
+        if (!coin.collected) {
+
+            const distance = Math.hypot(
+                player.x - coin.x,
+                player.y - coin.y
+            );
+
+            if (distance < 25) {
+
+                coin.collected = true;
+
+                score += 25;
+
+                gameMessage.textContent =
+                    "✨ You collected a coin!";
+
+                updateStats();
+
+                playSound(900, 0.08);
+
+            }
+
+        }
+
+    });
+
+}
+
+// ====================================
+// EXIT CHECK
+// ====================================
+
+function checkDoor() {
+
+    const distance = Math.hypot(
+        player.x - door.x,
+        player.y - door.y
+    );
+
+    if (distance < 35) {
+
+        if (collectedKeys === 3) {
+
+            levelComplete();
+
+        } else {
+
+            gameMessage.textContent =
+                "🔒 Door locked! You need " +
+                (3 - collectedKeys) + " more key(s).";
+
+        }
+
+    }
+
+}
+
+function levelComplete() {
+
+    gameRunning = false;
+
+    score += 250;
+
+    updateStats();
+
+    showOverlay(
+        "LEVEL COMPLETE!",
+        "You escaped the haunted room! Get ready for the next level.",
+        "🎉",
+        "NEXT LEVEL",
+        nextLevel
+    );
+
+    gameMessage.textContent =
+        "You earned 250 bonus points!";
+
+    playSound(1000, 0.2);
+
+}
+
+function nextLevel() {
+
+    level++;
+
+    setupLevel();
+
+    hideOverlay();
+
+    gameRunning = true;
+
+    lastTime = performance.now();
+
+    if (animationId === null) {
+        animationId = requestAnimationFrame(gameLoop);
+    }
+
+}
+
+// ====================================
+// PLAYER & GHOST COLLISION
+// ====================================
+
+function checkGhostCollision() {
+
+    const playerRect = {
+        x: player.x,
+        y: player.y,
+        size: player.size
+    };
+
+    const ghostRect = {
+        x: ghost.x,
+        y: ghost.y,
+        w: ghost.size,
+        h: ghost.size
+    };
+
+    if (rectCollision(playerRect, ghostRect)) {
+
+        lives--;
+
+        updateStats();
+
+        playSound(180, 0.3);
+
+        if (lives <= 0) {
+
+            endGame();
+
+        } else {
+
+            player.x = 60;
+            player.y = 60;
+
+            ghost.x = 560;
+            ghost.y = 320;
+
+            gameMessage.textContent =
+                "👻 The ghost caught you! " + lives + " lives left.";
+
+        }
+
+    }
+
+}
+
+function endGame() {
+
+    gameRunning = false;
+    gameOver = true;
+
+    showOverlay(
+        "GAME OVER",
+        "The ghost caught you! Your final score is " + score + ".",
+        "💀",
+        "TRY AGAIN",
+        restartGame
+    );
+
+}
+
+// ====================================
+// DRAW BACKGROUND
+// ====================================
+
+function drawBackground() {
+
+    ctx.fillStyle = "#100b1b";
+
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let y = 0; y < ROWS; y++) {
+
+        for (let x = 0; x < COLS; x++) {
+
+            ctx.fillStyle =
+                (x + y) % 2 === 0
+                ? "#1b1428"
+                : "#21182e";
+
+            ctx.fillRect(
+                x * TILE,
+                y * TILE,
+                TILE,
+                TILE
+            );
+
+            ctx.strokeStyle = "#2d203c";
+            ctx.lineWidth = 1;
+
+            ctx.strokeRect(
+                x * TILE,
+                y * TILE,
+                TILE,
+                TILE
+            );
+
+        }
+
+    }
+
+}
+
+// ====================================
+// DRAW WALLS
+// ====================================
+
+function drawWalls() {
+
+    walls.forEach(wall => {
+
+        ctx.fillStyle = "#49315b";
+
+        ctx.fillRect(
+            wall.x,
+            wall.y,
+            wall.w,
+            wall.h
+        );
+
+        ctx.strokeStyle = "#76518f";
+        ctx.lineWidth = 2;
+
+        ctx.strokeRect(
+            wall.x + 2,
+            wall.y + 2,
+            wall.w - 4,
+            wall.h - 4
+        );
+
+        ctx.fillStyle = "#30213f";
+
+        ctx.fillRect(
+            wall.x + 5,
+            wall.y + 5,
+            wall.w - 10,
+            wall.h - 10
+        );
+
+    });
+
+}
+
+// ====================================
+// DRAW PLAYER
+// ====================================
+
+function drawPlayer() {
+
+    // Character body
+
+    ctx.fillStyle = "#a78bfa";
+
+    ctx.fillRect(
+        player.x,
+        player.y,
+        player.size,
+        player.size
+    );
+
+    // Eyes
+
+    ctx.fillStyle = "#ffffff";
+
+    ctx.fillRect(player.x + 5, player.y + 6, 5, 5);
+    ctx.fillRect(player.x + 15, player.y + 6, 5, 5);
+
+    // Mouth
+
+    ctx.fillStyle = "#3b245a";
+
+    ctx.fillRect(player.x + 8, player.y + 17, 9, 3);
+
+    // Feet
+
+    ctx.fillStyle = "#6d28d9";
+
+    ctx.fillRect(player.x + 2, player.y + 22, 7, 5);
+    ctx.fillRect(player.x + 15, player.y + 22, 7, 5);
+
+}
+
+// ====================================
+// DRAW GHOST
+// ====================================
+
+function drawGhost() {
+
+    const gx = ghost.x;
+    const gy = ghost.y;
+
+    ctx.fillStyle = "#ddd6fe";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        gx + ghost.size / 2,
+        gy + ghost.size / 2,
+        ghost.size / 2,
+        Math.PI,
+        0
+    );
+
+    ctx.lineTo(gx + ghost.size, gy + ghost.size);
+
+    ctx.lineTo(gx + ghost.size * 0.7, gy + ghost.size - 6);
+
+    ctx.lineTo(gx + ghost.size * 0.5, gy + ghost.size);
+
+    ctx.lineTo(gx + ghost.size * 0.3, gy + ghost.size - 6);
+
+    ctx.lineTo(gx, gy + ghost.size);
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.fillStyle = "#49315b";
+
+    ctx.fillRect(gx + 7, gy + 11, 5, 7);
+    ctx.fillRect(gx + 17, gy + 11, 5, 7);
+
+}
+
+// ====================================
+// DRAW KEYS
+// ====================================
+
+function drawKeys() {
+
+    keys.forEach(key => {
+
+        if (!key.collected) {
+
+            ctx.fillStyle = "#facc15";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                key.x,
+                key.y,
+                8,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+            ctx.fillRect(
+                key.x + 5,
+                key.y - 3,
+                18,
+                6
+            );
+
+            ctx.fillRect(
+                key.x + 15,
+                key.y - 3,
+                4,
+                9
+            );
+
+        }
+
+    });
+
+}
+
+// ====================================
+// DRAW COINS
+// ====================================
+
+function drawCoins() {
+
+    coins.forEach(coin => {
+
+        if (!coin.collected) {
+
+            ctx.fillStyle = "#fbbf24";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                coin.x,
+                coin.y,
+                7,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+            ctx.strokeStyle = "#fff1a6";
+            ctx.lineWidth = 2;
+
+            ctx.stroke();
+
+        }
+
+    });
+
+}
+
+// ====================================
+// DRAW EXIT DOOR
+// ====================================
+
+function drawDoor() {
+
+    ctx.fillStyle =
+        collectedKeys === 3
+        ? "#166534"
+        : "#713f12";
+
+    ctx.fillRect(
+        door.x,
+        door.y,
+        door.size,
+        door.size
+    );
+
+    ctx.strokeStyle =
+        collectedKeys === 3
+        ? "#86efac"
+        : "#d97706";
+
+    ctx.lineWidth = 3;
+
+    ctx.strokeRect(
+        door.x,
+        door.y,
+        door.size,
+        door.size
+    );
+
+    ctx.fillStyle = "#facc15";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        door.x + 30,
+        door.y + 22,
+        4,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+}
+
+// ====================================
+// LIGHTING EFFECT
+// ====================================
+
+function drawLighting() {
+
+    const centerX = player.x + player.size / 2;
+    const centerY = player.y + player.size / 2;
+
+    const gradient = ctx.createRadialGradient(
+        centerX,
+        centerY,
+        20,
+        centerX,
+        centerY,
+        150
+    );
+
+    gradient.addColorStop(0, "rgba(0,0,0,0)");
+    gradient.addColorStop(0.6, "rgba(0,0,0,0.3)");
+    gradient.addColorStop(1, "rgba(0,0,0,0.75)");
+
+    ctx.fillStyle = gradient;
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+}
+
+// ====================================
+// DRAW GAME
+// ====================================
+
+function drawGame() {
+
+    drawBackground();
+
+    drawWalls();
+
+    drawDoor();
+
+    drawCoins();
+
+    drawKeys();
+
+    drawGhost();
+
+    drawPlayer();
+
+    drawLighting();
+
+}
+
+// ====================================
+// GAME LOOP
+// ====================================
+
+function gameLoop(timestamp) {
+
+    animationId = null;
+
+    if (!gameRunning) {
+
+        drawGame();
+
+        return;
+
+    }
+
+    let delta = (timestamp - lastTime) / 1000;
+
+    delta = Math.min(delta, 0.05);
+
+    lastTime = timestamp;
+
+    movePlayer(delta);
+
+    moveGhost(delta);
+
+    collectItems();
+
+    checkGhostCollision();
+
+    if (gameRunning) {
+        checkDoor();
+    }
+
+    drawGame();
+
+    if (gameRunning) {
+        animationId = requestAnimationFrame(gameLoop);
+    }
+
+}
+
+// ====================================
+// KEYBOARD
+// ====================================
+
+document.addEventListener("keydown", function(e) {
+
+    const key = e.key.toLowerCase();
+
+    if ([
+        "arrowup",
+        "arrowdown",
+        "arrowleft",
+        "arrowright"
+    ].includes(key)) {
+
+        e.preventDefault();
+
+    }
+
+    if (key === "arrowup" || key === "w") {
+        movement.up = true;
+    }
+
+    if (key === "arrowdown" || key === "s") {
+        movement.down = true;
+    }
+
+    if (key === "arrowleft" || key === "a") {
+        movement.left = true;
+    }
+
+    if (key === "arrowright" || key === "d") {
+        movement.right = true;
+    }
+
+});
+
+document.addEventListener("keyup", function(e) {
+
+    const key = e.key.toLowerCase();
+
+    if (key === "arrowup" || key === "w") {
+        movement.up = false;
+    }
+
+    if (key === "arrowdown" || key === "s") {
+        movement.down = false;
+    }
+
+    if (key === "arrowleft" || key === "a") {
+        movement.left = false;
+    }
+
+    if (key === "arrowright" || key === "d") {
+        movement.right = false;
+    }
+
+});
+
+// ====================================
+// MOBILE TOUCH CONTROLS
+// ====================================
+
+document.querySelectorAll(".control-btn").forEach(button => {
+
+    const direction = button.dataset.dir;
+
+    button.addEventListener("pointerdown", function(e) {
+
+        e.preventDefault();
+
+        movement[direction] = true;
+
+    });
+
+    button.addEventListener("pointerup", function() {
+
+        movement[direction] = false;
+
+    });
+
+    button.addEventListener("pointerleave", function() {
+
+        movement[direction] = false;
+
+    });
+
+    button.addEventListener("pointercancel", function() {
+
+        movement[direction] = false;
+
+    });
+
+});
+
+window.addEventListener("blur", function() {
+
+    movement.up = false;
+    movement.down = false;
+    movement.left = false;
+    movement.right = false;
+
+});
+
+// ====================================
+// SOUND EFFECTS
+// ====================================
+
+let audioContext = null;
+
+function playSound(frequency, duration) {
+
+    if (!soundOn) return;
+
+    try {
+
+        if (!audioContext) {
+
+            audioContext = new (
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+
+        }
+
+        if (audioContext.state === "suspended") {
+            audioContext.resume();
+        }
+
+        const oscillator = audioContext.createOscillator();
+
+        const gain = audioContext.createGain();
+
+        oscillator.type = "sine";
+
+        oscillator.frequency.value = frequency;
+
+        gain.gain.value = 0.08;
+
+        oscillator.connect(gain);
+
+        gain.connect(audioContext.destination);
+
+        oscillator.start();
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.001,
+            audioContext.currentTime + duration
+        );
+
+        oscillator.stop(
+            audioContext.currentTime + duration
+        );
+
+    } catch (error) {
+
+        console.log("Audio is unavailable.");
+
+    }
+
+}
+
+function toggleSound() {
+
+    soundOn = !soundOn;
+
+    document.querySelector(".game-actions button").textContent =
+        soundOn ? "🔊 Sound" : "🔇 Sound";
+
+}
+
+// ====================================
+// INITIALIZE
+// ====================================
+
+setupLevel();
+
+drawGame();
+
+showOverlay(
+    "ENTER THE NIGHT",
+    "Are you brave enough to enter the haunted house? Find the keys, escape the ghost, and survive.",
+    "🏚️",
+    "START ADVENTURE",
+    startGame
+);
+
+</script>
+
+</body>
+</html>
